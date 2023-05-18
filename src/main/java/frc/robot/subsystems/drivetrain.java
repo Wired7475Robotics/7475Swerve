@@ -27,7 +27,12 @@ public class drivetrain {
     }
 
     public void swervedrive(){
+<<<<<<< Updated upstream
         driveTranslation = new Translation2d(Robot.controlers.getDriveRightStick(Controll.Y)*4, Robot.controlers.getDriveRightStick(Controll.X)*4);
         swerveDrive.drive(driveTranslation, Robot.controlers.getDriveLeftStick(Controll.X)*7, true, false);
+=======
+        driveTranslation = new Translation2d(Controll.getOpLeftStick(Controll.Y)*1, Controll.getOpLeftStick(Controll.X)*1);
+        swerveDrive.drive(driveTranslation, Robot.controlers.getDriveLeftStick(Controll.X)*-2, true, false);
+>>>>>>> Stashed changes
     }
 }

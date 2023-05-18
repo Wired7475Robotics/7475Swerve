@@ -88,7 +88,7 @@ public class Controll {
             return 0;
     }
 
-    public double getOpLeftStick(int axis) {
+    public static double getOpLeftStick(int axis) {
         if( axis == Y )
             return (opController.getLeftY() > DEADZONE || opController.getLeftY() < -DEADZONE) ? opController.getLeftY() : 0 ;
         else if ( axis == X)
