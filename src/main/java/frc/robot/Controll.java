@@ -16,7 +16,7 @@ public class Controll {
     private static XboxController driveController;
     private static XboxController opController;
     private static Joystick mouseJoystick;
-    private static final double DEADZONE = 0.01;
+    private static final double DEADZONE = 0.5;
     private static final double TRIGGER_THRESH = 0.5;
     public static final int RIGHT = 0;
     public static final int LEFT = 1;

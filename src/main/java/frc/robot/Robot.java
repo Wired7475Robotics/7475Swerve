@@ -4,11 +4,14 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.TeleopDrive;
 import frc.robot.subsystems.drivetrain;
 import swervelib.SwerveDrive;
 import swervelib.SwerveModule;
@@ -22,10 +25,11 @@ import swervelib.SwerveModule;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private drivetrain drive = new drivetrain();
+  public static drivetrain drive = new drivetrain();
   public static Controll controlers = new Controll();
   private RobotContainer m_robotContainer;
-
+  public static double[] absPos = new double[4];
+  public static AHRS navx = new AHRS();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -35,7 +39,9 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    swervelib.telemetry.SwerveDriveTelemetry.verbosity = swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
+    drive.setDefaultCommand(new TeleopDrive());
+    //swervelib.telemetry.SwerveDriveTelemetry.verbosity = swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
+    //System.out.println(swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity.HIGH);
 
     CommandScheduler.getInstance().run();
   }
@@ -50,13 +56,12 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     SwerveModule[] rawModules = drive.swerveDrive.getModules();
+
+    // Library workaround:
     for( int i = 0; i < 4; i++){
-      double absPos = rawModules[i].configuration.absoluteEncoder.getAbsolutePosition() - rawModules[i].configuration.angleOffset;
-      rawModules[i].getAngleMotor().setPosition(absPos);
+      absPos[i] = rawModules[i].configuration.absoluteEncoder.getAbsolutePosition() - rawModules[i].configuration.angleOffset;
+      rawModules[i].getAngleMotor().setPosition(absPos[i]);
     }
-
-
-
   }
 
   /** This function is called once each time the robot enters Disabled mode. */
@@ -90,12 +95,14 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
+    
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    drive.swervedrive();
+    CommandScheduler.getInstance().schedule(drive.getDefaultCommand());
+    CommandScheduler.getInstance().run();
   }
 
   @Override
