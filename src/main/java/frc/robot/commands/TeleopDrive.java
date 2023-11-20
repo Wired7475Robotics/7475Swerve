@@ -38,24 +38,36 @@ public class TeleopDrive extends CommandBase{
         targetAngle = targetAngle < 0? targetAngle +360 : currentAngle;
         
         //Calculate shortest distance to target angle
-        double absdiff = math.abs(currentAngle - targetAngle);
-        double absaltDiff = Math.abs(diff - 360);
-        double diff = currentAngle - targetAngle
+        double absdiff = Math.abs(currentAngle - targetAngle);
+        double absaltDiff = Math.abs(absdiff - 360);
+        double diff = currentAngle - targetAngle;
+        
+        /* Evan pseudo code
         if absdiff < absaltDiff:
             output = diff
         if absaltDiff < absdiff:
             output = -1 * absaltDiff
             if diff < 0:
-            output = output * -1
-        
-            
+                output = output * -1
+        */
+
         
         
         //Output calculated rotation velocity to driveTrain
         pid.setSetpoint(targetAngle);
-        double output = pid.calculate(currentAngle);
+        //double output = pid.calculate(currentAngle);
+        double output = 0; //JB pseudo-code into java; sorry if its busted
+        if (absdiff < absaltDiff) {
+            output = diff;
+        }
+        if (absaltDiff < absdiff) {
+            output = -1 * absaltDiff;
+            if (diff < 0) {
+            output = output * -1;
+            }
+        }
         System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + output);
-        Robot.drive.setRotationVelocity(-output/180);
+        Robot.drive.setRotationVelocity(-output/360);
 
         rightStickX = Robot.controlers.getOpLeftStick(Controll.X);
         rightStickY = Robot.controlers.getOpLeftStick(Controll.Y);
