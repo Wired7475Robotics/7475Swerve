@@ -1,9 +1,26 @@
 {
+  "HALProvider": {
+    "Other Devices": {
+      "CANCoder[11]": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/Field": "Field2d",
       "/SmartDashboard/navX-Sensor[1]": "Gyro"
+    }
+  },
+  "NetworkTables": {
+    "Retained Values": {
+      "open": false
+    },
+    "Transitory Values": {
+      "open": false
     }
   }
 }

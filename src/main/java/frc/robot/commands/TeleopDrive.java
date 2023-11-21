@@ -30,11 +30,10 @@ public class TeleopDrive extends CommandBase{
         //Get left stick values and calculate target angle
         leftStickX = Robot.controlers.getDriveLeftStick(Controll.X);
         leftStickY = Robot.controlers.getDriveLeftStick(Controll.Y);
-        targetAngle = Math.toDegrees(Math.atan2(leftStickY,leftStickX));
+        targetAngle = 180 + Math.toDegrees(Math.atan2(leftStickY,leftStickX));
         System.out.println("Target Angle: "+ targetAngle + " leftStickX: " + leftStickX + " leftStickY: " + leftStickY);
         currentAngle = Robot.navx.getAngle() % 360;
         currentAngle = currentAngle < 0? currentAngle + 360 : currentAngle;
-        targetAngle = targetAngle < 0? targetAngle +360 : currentAngle;
         
         //Calculate shortest distance to target angle
         double diff = currentAngle - targetAngle;
@@ -47,7 +46,7 @@ public class TeleopDrive extends CommandBase{
         output = diff < 0? output * -1 : output;  
         
         //Output calculated rotation velocity to driveTrain
-        //System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + output);
+        System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + output);
         Robot.drive.setRotationVelocity(-output/180);
 
         rightStickX = Robot.controlers.getOpLeftStick(Controll.X);
