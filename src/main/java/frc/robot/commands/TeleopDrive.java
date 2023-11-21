@@ -36,11 +36,12 @@ public class TeleopDrive extends CommandBase{
         targetAngle = targetAngle < 0? targetAngle +360 : currentAngle;
         
         //Calculate shortest distance to target angle
-        double absdiff = math.abs(currentAngle - targetAngle);
-        double absaltDiff = Math.abs(diff - 360);
         double diff = currentAngle - targetAngle;
-
+        double absdiff = Math.abs(currentAngle - targetAngle);
+        double absaltDiff = Math.abs(diff - 360);
         
+
+
         double output = absdiff < absaltDiff? diff : -1 * absaltDiff;
         output = -1 * absaltDiff;
         output = diff < 0? output * -1 : output;  
