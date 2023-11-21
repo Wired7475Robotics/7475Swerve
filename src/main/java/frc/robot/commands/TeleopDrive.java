@@ -43,7 +43,6 @@ public class TeleopDrive extends CommandBase{
 
 
         double output = absdiff < absaltDiff? diff : -1 * absaltDiff;
-        output = -1 * absaltDiff;
         output = diff < 0? output * -1 : output;  
         
         //Output calculated rotation velocity to driveTrain
