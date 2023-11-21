@@ -26,7 +26,7 @@ public class TeleopDrive extends CommandBase{
     }
     @Override
     public void execute() {
-        System.out.println("Exectuting drive command");
+        //System.out.println("Exectuting drive command");
         //Get left stick values and calculate target angle
         leftStickX = Robot.controlers.getDriveLeftStick(Controll.X);
         leftStickY = Robot.controlers.getDriveLeftStick(Controll.Y);
