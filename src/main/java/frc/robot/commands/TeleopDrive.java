@@ -18,7 +18,11 @@ public class TeleopDrive extends CommandBase{
         addRequirements(Robot.drive);
     }
     
-    
+    public static double mod(double a, double b) { //booleg modulo function, works same as in python
+		double c = a % b;
+		c = c < 0? c + b : c;
+		return c;
+		}
 
     @Override
     public void initialize() {
@@ -28,26 +32,26 @@ public class TeleopDrive extends CommandBase{
     public void execute() {
         //System.out.println("Exectuting drive command");
         //Get left stick values and calculate target angle
-        leftStickX = Robot.controlers.getDriveLeftStick(Controll.X);
         leftStickY = Robot.controlers.getDriveLeftStick(Controll.Y);
-        targetAngle = 180 + Math.toDegrees(Math.atan2(leftStickY,leftStickX));
-        System.out.println("Target Angle: "+ targetAngle + " leftStickX: " + leftStickX + " leftStickY: " + leftStickY);
-        currentAngle = Robot.navx.getAngle() % 360;
-        currentAngle = currentAngle < 0? currentAngle + 360 : currentAngle;
+        leftStickX = Robot.controlers.getDriveLeftStick(Controll.X);
         
+        currentAngle = mod(Robot.navx.getAngle(), 360); //modulo starting angle
+        targetAngle = Math.toDegrees(Math.atan2(leftStickY,leftStickX)) + 180.0; //get target angle, between 0 and 360 deg
+        
+        double deadzone=0.2; //deadzone, set this fittingly for the flight sticks!
+        if (Math.abs(leftStickY) < deadzone && Math.abs(leftStickX) < deadzone) { //prevent turning when in deadzone
+			targetAngle = currentAngle;
+		}
+
         //Calculate shortest distance to target angle
-        double diff = currentAngle - targetAngle;
-        double absdiff = Math.abs(currentAngle - targetAngle);
-        double absaltDiff = Math.abs(diff - 360);
+		double diff = currentAngle - targetAngle;
+		diff = mod( (diff + 180) , 360 ) - 180; //equals between -180 and 180
         
-
-
-        double output = absdiff < absaltDiff? diff : -1 * absaltDiff;
-        output = diff < 0? output * -1 : output;  
+        //Send calculated rotation velocity to driveTrain
+        Robot.drive.setRotationVelocity(diff/180); //should equal between -1 and 1 (for now)
         
-        //Output calculated rotation velocity to driveTrain
-        System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + output);
-        Robot.drive.setRotationVelocity(-output/180);
+        //print info
+        System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + (diff/180));
 
         rightStickX = Robot.controlers.getOpLeftStick(Controll.X);
         rightStickY = Robot.controlers.getOpLeftStick(Controll.Y);
