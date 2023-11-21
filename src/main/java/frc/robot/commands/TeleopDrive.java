@@ -12,7 +12,7 @@ public class TeleopDrive extends CommandBase{
     double rightStickY;
     double targetAngle;
     double currentAngle;
-    PIDController pid = new PIDController(0.05, 0, 0);
+    
 
     public TeleopDrive(){
         addRequirements(Robot.drive);
@@ -23,8 +23,6 @@ public class TeleopDrive extends CommandBase{
     @Override
     public void initialize() {
         //Set PID values and enable PID
-        pid.setSetpoint(0);
-        pid.setTolerance(0.1);
     }
     @Override
     public void execute() {
@@ -40,20 +38,14 @@ public class TeleopDrive extends CommandBase{
         //Calculate shortest distance to target angle
         double absdiff = math.abs(currentAngle - targetAngle);
         double absaltDiff = Math.abs(diff - 360);
-        double diff = currentAngle - targetAngle
-        if absdiff < absaltDiff:
-            output = diff
-        if absaltDiff < absdiff:
-            output = -1 * absaltDiff
-            if diff < 0:
-            output = output * -1
+        double diff = currentAngle - targetAngle;
+
         
-            
-        
+        double output = absdiff < absaltDiff? diff : -1 * absaltDiff;
+        output = -1 * absaltDiff;
+        output = diff < 0? output * -1 : output;  
         
         //Output calculated rotation velocity to driveTrain
-        pid.setSetpoint(targetAngle);
-        double output = pid.calculate(currentAngle);
         System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + output);
         Robot.drive.setRotationVelocity(-output/180);
 
