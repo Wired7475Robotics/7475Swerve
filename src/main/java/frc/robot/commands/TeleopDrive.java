@@ -12,62 +12,46 @@ public class TeleopDrive extends CommandBase{
     double rightStickY;
     double targetAngle;
     double currentAngle;
-    PIDController pid = new PIDController(0.05, 0, 0);
+    
 
     public TeleopDrive(){
         addRequirements(Robot.drive);
     }
     
-    
+    public static double mod(double a, double b) { //booleg modulo function, works same as in python
+		double c = a % b;
+		c = c < 0? c + b : c;
+		return c;
+		}
 
     @Override
     public void initialize() {
         //Set PID values and enable PID
-        pid.setSetpoint(0);
-        pid.setTolerance(0.1);
     }
     @Override
     public void execute() {
-        System.out.println("Exectuting drive command");
+        //System.out.println("Exectuting drive command");
         //Get left stick values and calculate target angle
-        leftStickX = Robot.controlers.getDriveLeftStick(Controll.X);
         leftStickY = Robot.controlers.getDriveLeftStick(Controll.Y);
-        targetAngle = Math.toDegrees(Math.atan2(leftStickY,leftStickX));
-        currentAngle = Robot.navx.getAngle() % 360;
-        currentAngle = currentAngle < 0? currentAngle + 360 : currentAngle;
-        targetAngle = targetAngle < 0? targetAngle +360 : currentAngle;
+        leftStickX = Robot.controlers.getDriveLeftStick(Controll.X);
         
-        //Calculate shortest distance to target angle
-        double absdiff = Math.abs(currentAngle - targetAngle);
-        double absaltDiff = Math.abs(absdiff - 360);
-        double diff = currentAngle - targetAngle;
+        currentAngle = mod(Robot.navx.getAngle(), 360); //modulo starting angle
+        targetAngle = Math.toDegrees(Math.atan2(leftStickY,leftStickX)) + 180.0; //get target angle, between 0 and 360 deg
         
-        /* Evan pseudo code
-        if absdiff < absaltDiff:
-            output = diff
-        if absaltDiff < absdiff:
-            output = -1 * absaltDiff
-            if diff < 0:
-                output = output * -1
-        */
+        double deadzone=0.2; //deadzone, set this fittingly for the flight sticks!
+        if (Math.abs(leftStickY) < deadzone && Math.abs(leftStickX) < deadzone) { //prevent turning when in deadzone
+			targetAngle = currentAngle;
+		}
 
+        //Calculate shortest distance to target angle
+		double diff = currentAngle - targetAngle;
+		diff = mod( (diff + 180) , 360 ) - 180; //equals between -180 and 180
         
+        //Send calculated rotation velocity to driveTrain
+        Robot.drive.setRotationVelocity(diff/180); //should equal between -1 and 1 (for now)
         
-        //Output calculated rotation velocity to driveTrain
-        pid.setSetpoint(targetAngle);
-        //double output = pid.calculate(currentAngle);
-        double output = 0; //JB pseudo-code into java; sorry if its busted
-        if (absdiff < absaltDiff) {
-            output = diff;
-        }
-        if (absaltDiff < absdiff) {
-            output = -1 * absaltDiff;
-            if (diff < 0) {
-            output = output * -1;
-            }
-        }
-        System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + output);
-        Robot.drive.setRotationVelocity(-output/360);
+        //print info
+        System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + (diff/180));
 
         rightStickX = Robot.controlers.getOpLeftStick(Controll.X);
         rightStickY = Robot.controlers.getOpLeftStick(Controll.Y);
