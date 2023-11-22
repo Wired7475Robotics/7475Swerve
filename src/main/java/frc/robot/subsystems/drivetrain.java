@@ -18,7 +18,7 @@ public class drivetrain extends SubsystemBase{
     public SwerveDrive swerveDrive;
 
     private Translation2d driveTranslation;
-    private double speedCoef = 1;
+    private double speedCoef = 2;
 
     private double[] velocities = new double[3];
 

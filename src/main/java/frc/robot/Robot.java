@@ -40,6 +40,8 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     drive.setDefaultCommand(new TeleopDrive());
+    navx.calibrate();
+    navx.reset();
     //swervelib.telemetry.SwerveDriveTelemetry.verbosity = swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity.HIGH;
     //System.out.println(swervelib.telemetry.SwerveDriveTelemetry.TelemetryVerbosity.HIGH);
 
