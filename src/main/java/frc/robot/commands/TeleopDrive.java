@@ -14,9 +14,9 @@ public class TeleopDrive extends CommandBase{
     double currentAngle;
     double lastAngle = 0;
 
-    final double FASTCOEF = 1.75;
+    final double FASTCOEF = 2;
     final double SLOWCOEF = 0.5;
-    final double DEGREEINCREMEMNT = 1;
+    final double DEGREEINCREMEMNT = 0.1;
     
 
     public TeleopDrive(){

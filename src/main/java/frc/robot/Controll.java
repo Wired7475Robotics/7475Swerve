@@ -44,9 +44,9 @@ public class Controll {
 
     public static boolean getDriveTrigger(int side) {
         if(side == RIGHT)
-            return driveController.getRightTriggerAxis() > TRIGGER_THRESH;
+            return driveController.getRightTriggerAxis() >= TRIGGER_THRESH;
         else if (side == LEFT)
-            return driveController.getLeftTriggerAxis() > TRIGGER_THRESH;
+            return driveController.getLeftTriggerAxis() >= TRIGGER_THRESH;
         else
             return false;
     }
@@ -62,18 +62,18 @@ public class Controll {
 
     public static boolean getOpTrigger(int side) {
         if(side == RIGHT)
-            return opController.getRightTriggerAxis() > TRIGGER_THRESH;
+            return opController.getRightTriggerAxis() >= TRIGGER_THRESH;
         else if (side == LEFT)
-            return opController.getLeftTriggerAxis() > TRIGGER_THRESH;
+            return opController.getLeftTriggerAxis() >= TRIGGER_THRESH;
         else
             return false;
     }
 
     public double getDriveLeftStick(int axis) {
         if( axis == Y )
-            return (driveController.getLeftY() > DEADZONE || driveController.getLeftY() < -DEADZONE) ? driveController.getLeftY() : 0 ;
+            return (driveController.getLeftY() >= 0 || driveController.getLeftY() <= -0) ? driveController.getLeftY() : 0 ;
         else if ( axis == X)
-            return (driveController.getLeftX() > DEADZONE || driveController.getLeftX() < -DEADZONE) ? driveController.getLeftX() : 0 ;
+            return (driveController.getLeftX() >= 0 || driveController.getLeftX() <= -0) ? driveController.getLeftX() : 0 ;
         else 
             return 0;
     }
@@ -81,27 +81,27 @@ public class Controll {
 
     public double getDriveRightStick(int axis) {
         if( axis == Y )
-            return (driveController.getRightY() > DEADZONE || driveController.getRightY() < -DEADZONE) ? driveController.getRightY() : 0 ;
+            return (driveController.getRightY() >= 0 || driveController.getRightY() <= -0) ? driveController.getRightY() : 0 ;
         else if ( axis == X)
-            return (driveController.getRightX() > DEADZONE || driveController.getRightX() < -DEADZONE) ? driveController.getRightX() : 0 ;
+            return (driveController.getRightX() >= 0 || driveController.getRightX() <= -0) ? driveController.getRightX() : 0 ;
         else 
             return 0;
     }
 
     public static double getOpLeftStick(int axis) {
         if( axis == Y )
-            return (opController.getLeftY() > DEADZONE || opController.getLeftY() < -DEADZONE) ? opController.getLeftY() : 0 ;
+            return (opController.getLeftY() >= 0 || opController.getLeftY() <= -DEADZONE) ? opController.getLeftY() : 0 ;
         else if ( axis == X)
-            return (opController.getLeftX() > DEADZONE || opController.getLeftX() < -DEADZONE) ?  opController.getLeftX() : 0 ;
+            return (opController.getLeftX() >= DEADZONE || opController.getLeftX() <= -DEADZONE) ?  opController.getLeftX() : 0 ;
         else 
             return 0;
     }
 
     public static double getOpRightStick(int axis) {
         if( axis == Y )
-            return (opController.getRightY() > DEADZONE || opController.getRightY() < -DEADZONE) ? opController.getRightY() : 0 ;
+            return (opController.getRightY() >= DEADZONE || opController.getRightY() <= -DEADZONE) ? opController.getRightY() : 0 ;
         else if ( axis == X)
-            return (opController.getRightX() > DEADZONE || opController.getRightX() < -DEADZONE) ? opController.getRightX() : 0 ;
+            return (opController.getRightX() >= DEADZONE || opController.getRightX() <= -DEADZONE) ? opController.getRightX() : 0 ;
         else 
             return 0;
     } 
@@ -140,26 +140,26 @@ public class Controll {
 
     public static boolean getOpDpad(int direction) {
         if (direction == 0)
-            return  (((opController.getPOV() < 135) && (opController.getPOV() < 45 )) && opController.getPOV() != -1);
+            return  (((opController.getPOV() <= 135) && (opController.getPOV() <= 45 )) && opController.getPOV() != -1);
         else if(direction == 1)
-            return (((opController.getPOV() < 315) && (opController.getPOV() > 225 )) && opController.getPOV() != -1);
+            return (((opController.getPOV() <= 315) && (opController.getPOV() >= 225 )) && opController.getPOV() != -1);
         else if(direction == 2)
-            return (((opController.getPOV() < 45) || (opController.getPOV()>315)) && opController.getPOV() != -1);
+            return (((opController.getPOV() <= 45) || (opController.getPOV()>=315)) && opController.getPOV() != -1);
         else if(direction == 3)
-            return (((opController.getPOV() > 135) && (opController.getPOV() < 225 )) && opController.getPOV() != -1);
+            return (((opController.getPOV() >= 135) && (opController.getPOV() <= 225 )) && opController.getPOV() != -1);
         else{
             return false;
         }    
     }
     public static boolean getDriveDpad(int direction) {
         if (direction == 0)
-            return  (((driveController.getPOV() < 135) && (driveController.getPOV() < 45 )) && driveController.getPOV() != -1);
+            return  (((driveController.getPOV() <= 135) && (driveController.getPOV() <= 45 )) && driveController.getPOV() != -1);
         else if(direction == 1)
-            return (((driveController.getPOV() < 315) && (driveController.getPOV() > 225 )) && driveController.getPOV() != -1);
+            return (((driveController.getPOV() <= 315) && (driveController.getPOV() >= 225 )) && driveController.getPOV() != -1);
         else if(direction == 2)
-            return (((driveController.getPOV() < 45) || (driveController.getPOV()>315)) && driveController.getPOV() != -1);
+            return (((driveController.getPOV() <= 45) || (driveController.getPOV()>=315)) && driveController.getPOV() != -1);
         else if(direction == 3)
-            return (((driveController.getPOV() > 135) && (driveController.getPOV() < 225 )) && driveController.getPOV() != -1);
+            return (((driveController.getPOV() >= 135) && (driveController.getPOV() <= 225 )) && driveController.getPOV() != -1);
         else{
             return false;
         }    
