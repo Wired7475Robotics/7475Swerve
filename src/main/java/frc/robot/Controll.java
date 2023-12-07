@@ -16,7 +16,7 @@ public class Controll {
     private static XboxController driveController;
     private static XboxController opController;
     private static Joystick mouseJoystick;
-    private static final double DEADZONE = 0.3;
+    private static final double DEADZONE = 0.1;
     private static final double TRIGGER_THRESH = 0.5;
     public static final int RIGHT = 0;
     public static final int LEFT = 1;
@@ -81,9 +81,9 @@ public class Controll {
 
     public double getDriveRightStick(int axis) {
         if( axis == Y )
-            return (driveController.getRightY() >= 0 || driveController.getRightY() <= -0) ? driveController.getRightY() : 0 ;
+            return (driveController.getRightY() >= DEADZONE || driveController.getRightY() <= -DEADZONE) ? driveController.getRightY() : 0 ;
         else if ( axis == X)
-            return (driveController.getRightX() >= 0 || driveController.getRightX() <= -0) ? driveController.getRightX() : 0 ;
+            return (driveController.getRightX() >= DEADZONE || driveController.getRightX() <= -DEADZONE) ? driveController.getRightX() : 0 ;
         else 
             return 0;
     }

@@ -61,12 +61,12 @@ public class TeleopDrive extends CommandBase{
         //print info
         System.out.println("Target Angle: "+ targetAngle + " Current Angle: " + currentAngle + " Difference: " + diff + " Output: " + (diff/180));
 
-        rightStickX = Robot.controlers.getOpLeftStick(Controll.X);
-        rightStickY = Robot.controlers.getOpLeftStick(Controll.Y);
+        rightStickX = Robot.controlers.getDriveRightStick(Controll.X);
+        rightStickY = Robot.controlers.getDriveRightStick(Controll.Y);
         
         //Add a fast/Slow mode that depends on button presses
-        rightStickY = Controll.getOpA()? rightStickY * FASTCOEF : Controll.getOpB()? rightStickY * SLOWCOEF : rightStickY;
-        rightStickX = Controll.getOpA()? rightStickX * FASTCOEF : Controll.getOpB()? rightStickX * SLOWCOEF : rightStickX;
+        rightStickY = Controll.getDriveBumper(Controll.RIGHT)? rightStickY * FASTCOEF : Controll.getDriveBumper(Controll.LEFT)? rightStickY * SLOWCOEF : rightStickY;
+        rightStickX = Controll.getDriveBumper(Controll.RIGHT)? rightStickX * FASTCOEF : Controll.getDriveBumper(Controll.LEFT)? rightStickX * SLOWCOEF : rightStickX;
         
         System.out.println("Right Stick: " + rightStickX + "," +  rightStickY);
 
