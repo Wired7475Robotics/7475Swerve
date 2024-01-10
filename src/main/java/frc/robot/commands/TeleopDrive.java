@@ -17,6 +17,7 @@ public class TeleopDrive extends CommandBase{
     final double FASTCOEF = 2;
     final double SLOWCOEF = 0.5;
     final double DEGREEINCREMEMNT = 0.1;
+    final double DEADZONE = 0.9;
     
 
     public TeleopDrive(){
@@ -43,9 +44,8 @@ public class TeleopDrive extends CommandBase{
         
         currentAngle = mod(Robot.navx.getAngle(), 360); //modulo starting angle
         targetAngle = Math.round(mod(Math.toDegrees(Math.atan2(leftStickY,leftStickX)) - 90, 360)/DEGREEINCREMEMNT)*DEGREEINCREMEMNT; //get target angle, between 0 and 360 deg
-        
-        double deadzone=0.9; //deadzone, set this fittingly for the flight sticks!
-        if (Math.abs(leftStickY) < deadzone && Math.abs(leftStickX) < deadzone) { //prevent turning when in deadzone
+
+        if (Math.abs(leftStickY) < DEADZONE && Math.abs(leftStickX) < DEADZONE) { //prevent turning when in deadzone
 			targetAngle = lastAngle;
 		} else {
             lastAngle = targetAngle;
